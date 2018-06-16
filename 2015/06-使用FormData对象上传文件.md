@@ -10,7 +10,8 @@
 但上传文件部分只有底层的`XMLHttpRequest`对象发送上传请求，那么怎么通过`jQuery`的`Ajax`上传呢？
 本文将介绍通过`jQuery`使用`FormData`对象上传文件。
 
-##使用`<form>`表单初始化`FormData`对象方式上传文件
+## 使用`<form>`表单初始化`FormData`对象方式上传文件 ##
+
 HTML代码
 ```HTML
 <form id="uploadForm" enctype="multipart/form-data">
@@ -41,7 +42,7 @@ $.ajax({
 
 如果不是用`<form>`表单构造`FormData`对象又该怎么做呢？
 
-##使用`FormData`对象添加字段方式上传文件
+## 使用`FormData`对象添加字段方式上传文件 ##
 HTML代码
 ```HTML
 <div id="uploadForm">
@@ -73,7 +74,7 @@ $.ajax({
 从代码`$('#file')[0].files[0]`中可以看到一个`<input type="file">`标签能够上传多个文件，
 只需要在`<input type="file">`里添加`multiple`或`multiple="multiple"`属性。
 
-## 服务器端读文件
+## 服务器端读文件 ##
 从`Servlet 3.0` 开始，可以通过 `request.getPart()` 或 `request.getPars()` 两个接口获取上传的文件。
 这里不多说，详细请参考官网教程 [Uploading Files with Java Servlet Technology](https://docs.oracle.com/javaee/7/tutorial/servlets011.htm#BABFGCHB) 以及示例 [The fileupload Example Application](https://docs.oracle.com/javaee/7/tutorial/servlets016.htm#BABDGFJJ)
 
