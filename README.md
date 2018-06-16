@@ -2,7 +2,7 @@ Index
 ---
 2016
 
-[04-JavaScript中 的NaN](https://github.com/Agreal/blogs/blob/master/2016/04-JavaScript%E4%B8%AD%E7%9A%84NaN.md)
+[05-JavaScript中 的NaN](https://github.com/Agreal/blogs/blob/master/2016/05-JavaScript%E4%B8%AD%E7%9A%84NaN.md)
 
 2015
 
