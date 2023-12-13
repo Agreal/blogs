@@ -3,7 +3,7 @@
 
 2022年
 
-* [01-大型网站JAMStack架构实践](2022/01-大型网站JAMStack架构实践.md)
+* [01-大型网站JAMStack架构实践](2022/01-jamstack-architecture-practice-in-large-scale-website.md)
 
 2018年
 

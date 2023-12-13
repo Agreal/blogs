@@ -15,7 +15,7 @@
 2019年底，技术雷达上提到了[JAMStack](https://www.thoughtworks.com/radar/techniques/jamstack)架构，主要技术包括：静态站点生成器(Static Site Generator)，无头CMS(Headless CMS) 和 CDN。使用静态站点生成器与无头CMS API集成生成静态页面，然后部署到CDN，能够给网站带来更好的性能、安全性和扩展性。
 
 <!-- markdownlint-disable no-inline-html -->
-<figure>
+<figure style="text-align:center;">
   <img src="./01-image/jamstack-architecture.webp" alt="传统CMS架构与JAMStack架构对比" />
   <figcaption>传统CMS架构与JAMStack架构对比，来自 https://jamstack.org/</figcaption>
 </figure>
