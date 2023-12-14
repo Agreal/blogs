@@ -82,7 +82,7 @@
 
 ### 2.2 开始画3D地球
 
-画一个3D地球，需要使用 球形几何体 `SphereGeometry` 对象，加载地球纹理图片和设置 `MeshBasicMaterial` 的 `map` 属性。修改一下代码，再调整颜色和旋转等参数。搞定，见 [globe-01](./11/globe-01.html) 。
+画一个3D地球，需要使用 球形几何体 `SphereGeometry` 对象，加载地球纹理图片和设置 `MeshBasicMaterial` 的 `map` 属性。修改一下代码，再调整颜色和旋转等参数。搞定，见 [globe-01](./12/globe-01.html) 。
 
 一下子就完成了2个Task，还剩最后一个Task：“用亮点显示城市位置”，估计再有一天就能做完。
 
@@ -165,6 +165,7 @@ function toEuler(latlng) {
 ### 3.3 绘制亮点光晕效果
 
 先使用png图片看一下，结果光晕会重叠在一起，不行。
+
 <!-- markdownlint-disable-next-line no-alt-text -->
 ![](./12/earth-dots-bug.webp)
 
