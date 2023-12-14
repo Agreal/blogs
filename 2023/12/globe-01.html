@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Globe 01</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from 'three'
+
+      const scene = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight)
+
+      const renderer = new THREE.WebGLRenderer()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+
+      const geometry = new THREE.SphereGeometry(1, 32, 32)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        map: new THREE.TextureLoader().load('./8081_earthspec2k.jpg'),
+      })
+      const globe = new THREE.Mesh(geometry, material)
+      scene.add(globe)
+
+      camera.position.z = 2
+
+      function animate() {
+        requestAnimationFrame(animate)
+
+        globe.rotation.y -= 0.005
+
+        renderer.render(scene, camera)
+      }
+
+      animate()
+    </script>
+  </body>
+</html>

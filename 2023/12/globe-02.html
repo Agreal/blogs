@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Globe 02</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from 'three'
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+
+      const scene = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight
+      )
+
+      const renderer = new THREE.WebGLRenderer()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+
+      const geometry = new THREE.SphereGeometry(1, 32, 32)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        map: new THREE.TextureLoader().load('./8081_earthspec2k.jpg'),
+      })
+
+      const globe = new THREE.Group().add(
+        new THREE.Mesh(geometry, material),
+        cityDotGroup()
+      )
+      scene.add(globe)
+
+      camera.position.z = 2
+
+      const controls = new OrbitControls(camera, renderer.domElement)
+
+      function animate() {
+        requestAnimationFrame(animate)
+
+        globe.rotation.y -= 0.005
+        controls.update()
+
+        renderer.render(scene, camera)
+      }
+
+      animate()
+
+      function cityDotGroup() {
+        const geometry = new THREE.CircleGeometry(0.02, 32)
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+        const cityCoordinates = [
+          { lat: 34.341576, lng: 108.939774 }, // 西安
+          { lat: 51.509865, lng: -0.118092 }, // London
+          { lat: -37.840935, lng: 144.946457 }, // Melbourne
+          { lat: 41.881832, lng: -87.623177 }, // Chicago
+          { lat: -33.447487, lng: -70.673676 }, // Santiago
+        ]
+        return cityCoordinates.reduce((group, latlng) => {
+          const cityMesh = new THREE.Mesh(geometry, material)
+          const { x, y, z } = lglt2xyz(latlng)
+          cityMesh.position.set(x, y, z)
+          cityMesh.setRotationFromEuler(toEuler(latlng))
+          group.add(cityMesh)
+          return group
+        }, new THREE.Group())
+      }
+
+      function lglt2xyz(latlng, radius = 1) {
+        const { lat, lng } = latlng
+        const { sin, cos, PI } = Math
+        const phi = (180 + lng) * (PI / 180)
+        const theta = (90 - lat) * (PI / 180)
+        return {
+          x: -radius * sin(theta) * cos(phi),
+          y: radius * cos(theta),
+          z: radius * sin(theta) * sin(phi),
+        }
+      }
+
+      function toEuler(latlng) {
+        const { lat, lng } = latlng
+        const { PI } = Math
+        const x = -lat * (PI / 180)
+        const y = (lng + 90) * (PI / 180)
+        return new THREE.Euler(x, y, 0, 'YXZ')
+      }
+    </script>
+  </body>
+</html>
