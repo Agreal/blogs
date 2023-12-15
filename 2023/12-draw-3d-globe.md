@@ -1,14 +1,10 @@
-# 如何绘制一个3D地球
+# 如何使用Tree.js画3D地球
 
 发布于: 2023.12.15
 
 ## 简介
 
 最近在一个官网项目上，需要展示一个3D效果的地球，并用亮点呈现该企业在全球的分布情况。本文主要记录了，使用 `Three.js` 绘制3D地球的“流水账”过程。
-
-<!-- markdownlint-disable-next-line no-alt-text
-期望效果如下,
-![](./12/3d-earth.webp) -->
 
 ## 一、开始调研
 
@@ -182,4 +178,3 @@ function toEuler(latlng) {
 * 网站 - [Three.js中文网](http://www.webgl3d.cn/)
 * 掘金专栏 - [Three.js 进阶之旅](https://github.com/dragonir/threejs-odessey)
 * Udemy视频 - [Intermediate Threejs with Shaders](https://thoughtworks.udemy.com/course/intermediate-threejs-with-shaders/learn)
-
