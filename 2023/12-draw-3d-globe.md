@@ -1,13 +1,14 @@
 # 如何绘制一个3D地球
 
-发布于: 2023.12.14
+发布于: 2023.12.15
 
 ## 简介
 
 最近在一个官网项目上，需要展示一个3D效果的地球，并用亮点呈现该企业在全球的分布情况。本文主要记录了，使用 `Three.js` 绘制3D地球的“流水账”过程。
 
 <!-- markdownlint-disable-next-line no-alt-text
-期望效果如下：![](./12/3d-earth.webp) -->
+期望效果如下,
+![](./12/3d-earth.webp) -->
 
 ## 一、开始调研
 
@@ -29,29 +30,29 @@
 
 ### 1.2 怎么绘制地球上的陆地？
 
-再看看 `Echarts` 的 [Hello World](https://echarts.apache.org/examples/zh/editor.html?c=globe-echarts-gl-hello-world&gl=1) 示例吧。地球表面居然是一个矩形图片？
+再看看 `Echarts` 的 [Hello World](https://echarts.apache.org/examples/zh/editor.html?c=globe-echarts-gl-hello-world&gl=1) 示例吧。地球表面居然是一个矩形图片？它是怎么变成球面的？
 
 <!-- markdownlint-disable no-inline-html -->
 <figure style="text-align:center;">
-  <img src="https://echarts.apache.org/examples/data-gl/asset/world.topo.bathy.200401.jpg" alt="地球uv贴图" />
-  <figcaption>地球图片, 来自 <a href="https://echarts.apache.org">Echarts</a></figcaption>
+  <img src="https://echarts.apache.org/examples/data-gl/asset/world.topo.bathy.200401.jpg" alt="地球纹理图片" />
+  <figcaption>地球纹理图片, 来自 <a href="https://echarts.apache.org">Echarts</a></figcaption>
 </figure>
 <!-- markdownlint-enable no-inline-html -->
 
-设计稿上的地球是黑白两种颜色，还得需要设计师PS图。有没有黑白图？搜索关键词是什么？先看看`GeoJSON` 吧，可以自定义颜色。
+设计稿上的地球是黑白两种颜色，还得需要设计师PS图。要不先看看 `GeoJSON` 吧，可以自定义颜色。
 
-#### 1.2.1 陆地海洋的 `GeoJSON` 数据
+#### 1.2.1 用 GeoJSON 数据？
 
-`TopoJSON` 的 [world-atlas](https://github.com/topojson/world-atlas#file-reference) 这个库有比较全的地理数据。搜搜我们的台湾在哪儿，果然有妖。国内的 `GeoJSON` 数据也不好找。放弃了。
+`TopoJSON` 的 [world-atlas](https://github.com/topojson/world-atlas#file-reference) 这个库有比较全的地理数据。搜搜我们的台湾在哪儿，果然有妖。国内的 `GeoJSON` 数据也不好找。只需要显示陆地，不需要国家的信息。先放弃了。
 
-#### 1.2.2 黑白两色的地球图片
+#### 1.2.2 还是用地球图片？
 
-在 YouTube 上搜搜 `three.js+globe` 的视频。啊哈，原来这类图片叫纹理 `Texture`。在[planetpixelemporium.com](https://planetpixelemporium.com/earth8081.html) 里，有很多清晰的地球纹理图片。
+在 YouTube 上搜搜 `three.js+globe` 的视频。啊哈，原来这类图片叫“纹理`Texture`”。在[planetpixelemporium.com](https://planetpixelemporium.com/earth8081.html) 里，有很多清晰的地球纹理图片。
 
 <!-- markdownlint-disable no-inline-html -->
 <figure style="text-align:center;">
   <img src="https://planetpixelemporium.com/download/download.php?earthspec1k.jpg" alt="地球黑白纹理图片" />
-  <figcaption>地球黑白纹理图片, 来自 <a href="https://planetpixelemporium.com">planetpixelemporium.com</a></figcaption>
+  <figcaption>来自 <a href="https://planetpixelemporium.com">planetpixelemporium.com</a></figcaption>
 </figure>
 <!-- markdownlint-enable no-inline-html -->
 
@@ -61,10 +62,10 @@
 
 ### 2.1 理解 `Three.js` 对象模型
 
-先来抄个 `Three.js` 的入门教程 [Creating a scene
+先抄个 `Three.js` 的入门教程 [Creating a scene
 ](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)。太简单了，但 `PerspectiveCamera`, `BoxGeometry`, `MeshBasicMaterial`, `Mesh` 这些API名词怎么理解和使用？
 
-首先，需要理解一个基础概念 [`视锥体(Viewing Frustum)`](https://cloud.tencent.com/developer/article/1802253)，你确定这是“初等”几何？看这个图就能理解 `PerspectiveCamera` 对象模型关系概念，
+首先，需要理解一个基础概念 [`视锥体(Viewing Frustum)`](https://cloud.tencent.com/developer/article/1802253)，你确定这是“初等”几何？看这个图帮助理解 `PerspectiveCamera` 对象模型概念，
 
 <!-- markdownlint-disable no-inline-html -->
 <figure style="text-align:center;">
@@ -73,28 +74,31 @@
 </figure>
 <!-- markdownlint-enable no-inline-html -->
 
-再看看其他视频和Blog：
+再找找其他视频和Blog：
 
 * B站视频 - [Three.js教程](https://www.bilibili.com/video/BV14r4y1G7h4/?share_source=copy_web&vd_source=87fd4ba12cc3bed7aed51c523b6749af) ，以及他的网站 [Three.js中文网](http://www.webgl3d.cn/)
 * 掘金专栏 - [Three.js 进阶之旅](https://github.com/dragonir/threejs-odessey)
 
-这下理解了，原来在 `Three.js` 里，显示任何物体都是用 `Scene`，`Camera` 和 `Renderer` 这三个对象构建3D空间。3D物体又是通过 网格模型(`Mesh`)、几何体(`Geometry`)形状和材质(`Material`) ，三个对象组合而成的。
+这下理解了，原来在 `Three.js` 里，
 
-### 2.2 开始画3D地球
+* 显示任何物体都是用 `Scene`，`Camera` 和 `Renderer` 这三个对象构建三维空间
+* 三维物体又是通过 网格模型(`Mesh`)、几何体(`Geometry`)形状和材质(`Material`) ，三个对象组合而成的。
+
+### 2.2 完成第一版3D地球
 
 画一个3D地球，需要使用 球形几何体 `SphereGeometry` 对象，加载地球纹理图片和设置 `MeshBasicMaterial` 的 `map` 属性。修改一下代码，再调整颜色和旋转等参数。搞定，见 [globe-01](./12/globe-01.html) 。
 
 一下子就完成了2个Task，还剩最后一个Task：“用亮点显示城市位置”，估计再有一天就能做完。
 
-问题来了，`globe.rotation.y -= 0.005` 的意思是地球沿Y轴方向旋转，那么地球的旋转速度是多少呢？XYZ三维坐标轴是怎么表示的？
+问题来了，`globe.rotation.y -= 0.005` 的意思是地球沿Y轴方向旋转，那么地球的旋转速度是多少呢？XYZ坐标轴分别指向哪个方向？
 
-## 三、显示城市亮点
+## 三、最后一步画城市亮点
 
 ### 3.1 地理经纬度转换三维坐标
 
-在 [latlong.net](https://www.latlong.net/) 网站可以搜到城市的经纬度数据。接下来，怎么将经纬度值转换成球面上的一个点坐标？
+在 [latlong.net](https://www.latlong.net/) 网站可以搜到城市的经纬度数据。接下来，怎么将经纬度值转换成球面上的一个点坐标呢？
 
-看这篇Blog - [Three.js 地理坐标和三维空间坐标的转换](https://github.com/verymuch/blog/issues/12)，可以理解到：“经纬度与地理坐标关系”，“球面坐标参数” 和 “地理坐标转换” 的数学理论知识。
+看这篇Blog“[Three.js 地理坐标和三维空间坐标的转换](https://github.com/verymuch/blog/issues/12)”，理解了：“经纬度与地理坐标关系”，“球面坐标参数” 和 “地理坐标转换” 等理论知识。
 <!-- markdownlint-disable no-inline-html -->
 <figure style="text-align:center;">
   <img src="https://github.com/xswei/ThreeJS_demo/raw/master/examples/02/zzx.png" alt="球面坐标参数" />
@@ -116,9 +120,9 @@ function lglt2xyz(lng, lat, radius) {
 }
 ```
 
-这 `sin`，`cos`，`Math.PI/180`，弧度 和 角度 等，赶紧补一下三角函数知识。
+已经忘了 `sin`，`cos`，`Math.PI/180`，“弧度”和“角度”这些三角函数的知识，赶紧恶补一下。
 
-### 3.2 绘制城市亮点，与地球同步旋转
+### 3.2 画城市亮点与地球同步旋转
 
 效果图上的城市亮点是一个带有光晕的圆形。
 先简单使用 圆形几何体`CircleGeometry` 画出来，再解决光晕效果。很快解决完以下问题：
@@ -169,17 +173,9 @@ function toEuler(latlng) {
 <!-- markdownlint-disable-next-line no-alt-text -->
 ![](./12/earth-dots-bug.webp)
 
-那就尝试用着色器`ShaderMaterial`实现，继续恶补`WebGL`的`GLSL`语法。期间了解到了“uv坐标”，“世界坐标”等3D模型知识，以及，“顶点着色器`Vertex Shader`”，“片元着色器`Fragment Shader`” 等底层着色器的知识和用法。
+那就尝试用着色器`ShaderMaterial`实现，继续恶补`WebGL`知识和`GLSL`语法。终于知道到了“uv坐标”，“世界坐标”，“模型矩阵”等3D模型知识，还有，“顶点着色器`Vertex Shader`”，“片元着色器`Fragment Shader`” 等底层“着色器”的知识和用法。这又是一个全新而又复杂的领域。
 
 几天后，客户说：“就用图片吧”。这一切终于可以结束了。
-
-## 四、总结
-
-翻到之前的一篇博客大赛文章 “Three.js 的一次摸鱼经历”，同样感慨到 `Three.js` 有一定门槛，前端开发需要具备一定的 高等数学 和 `WebGL` 知识。
-
-可以联想到一些真实项目场景，如：1. 绘制3D地球，用曲线动态连接两个点，表示两点间的动态关系；2. 绘制厂房设备拓扑图，用颜色动态表示出设备间的运行状况。这些都必须掌握 着色器`Shader` 的应用。
-
-另外，设计师(应该叫 3D建模师)，是需要使用 [`Blender`](https://www.blender.org/) 这类工具绘制3D模型，交给前端开发呈现3D模型效果。
 
 ## 参考资料
 
