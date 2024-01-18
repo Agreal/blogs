@@ -1,16 +1,11 @@
-JavaScript 中的 NaN
----
-*2016-05-04*
+# JavaScript 中的 NaN
 
+发布于: 2016.05.04
 
-1. 什么是 `NaN`
-2. 什么时候会返回 NaN
-3. 判断 NaN
-4. 参考
-
-## 什么是 NaN
+## 1. 什么是 NaN
 
 在 MDN 的 [NaN][2] 文章中有描述：
+
 > - 全局属性 NaN 表示 Not-A-Number 的值。
 > - NaN 是一个全局对象的属性。
 > - NaN 属性的初始值就是 NaN，和 Number.NaN 的值一样。
@@ -22,9 +17,10 @@ JavaScript 中的 NaN
 ```JavaScript
 typeof NaN   // "number"
 ```
+
 也就是说 `NaN` 是一种特殊的 `Number` 类型值。
 
-## 什么时候会返回 NaN
+## 2. 什么时候会返回 NaN
 
 [JavaScript 权威指南][1] 中『3.1.3 JavaScript 中的算数运算』章节里有描述：
 > 无穷大除以无穷大、给任意负数做开方运算 或者 算数运算符与不是数字或无法转换为数字的操作数一起使用时都将返回 `NaN`。
@@ -59,6 +55,7 @@ Math.sqrt('4');        // 2
 ```
 
 ### 无法转换为数字的操作
+
 这里涉及到 JavaScript 的 **类型转换** 的概念。
 
 [JavaScript 权威指南][1] 『3.8 类型转换』章节有描述：
@@ -94,7 +91,6 @@ parseInt(null);        // NaN
 
 需要注意的是 `Number()` 和 `parseInt()``parseFloat()` ，对某些输入值的处理不同，如 `null`。
 
-
 非数字类型转换 为 数字类型，如下表汇总：
 
 | 值 | 数字 |
@@ -111,12 +107,12 @@ parseInt(null);        // NaN
 | \['a'\] (其他数组)     | NaN |
 | function(){} (任意函数)     | NaN |
 
-
-## 如何判断 NaN
+## 3. 如何判断 NaN
 
 首先全局的 `isNaN()` 函数不能严格判断输入值是否为 `NaN`。
 
 ### `isNaN()` 的怪异行为
+
 在 MDN 的 [isNaN()][4] 文章中对 **非数值参数** 所表现的『怪异行为』有解释：
 
 > 它会先尝试将这个参数转换为数值，然后才会对转换后的结果是否是 `NaN` 进行判断。
@@ -140,7 +136,8 @@ isNaN('');        // false: 空字符串被转换成 0
 typeof value === 'number' && isNaN(value);
 ```
 
-## 参考
+## 4. 参考资料
+
 - [JavaScript 权威指南][1]
 - [MDN NaN][2]
 - [MDN Number.isNaN][3]
