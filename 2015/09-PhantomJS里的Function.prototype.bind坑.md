@@ -1,7 +1,6 @@
-PhantomJS 里的 Function.prototype.bind 坑
----
-*2015-09-09*
+# PhantomJS 里的 Function.prototype.bind 坑
 
+发布于: 2015-09-09
 
 在用 PhantomJS 运行 `stdfn.CHAR = String.fromCharCode.bind(String);` 时报错：
 `TypeError: 'undefined' is not a function (evaluating 'String.fromCharCode.bind(String)')`

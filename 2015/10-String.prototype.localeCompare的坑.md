@@ -1,7 +1,6 @@
-String.prototype.localeCompare 的坑
----
-*2015-10-31*
+# String.prototype.localeCompare 的坑
 
+发布于: 2015-10-31
 
 使用 [`gulp-inject`](https://www.npmjs.com/package/gulp-inject) 注入到页面之前，需要对文件进行排序。在使用排序方法时发现 `String.prototype.localeCompare` 的这个方法在 `Mac` 和 `Windows` 环境结果不同。
 
