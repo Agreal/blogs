@@ -56,7 +56,7 @@
 
 以上过程在[https://reactions-demo.vercel.app/](https://reactions-demo.vercel.app/) 介绍了工作流程，这里引用文章《[使用Next.js进行增量静态再生（ISR）的完整指南](https://juejin.cn/post/6977783923099041800)》的配图。
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/11860107454b4ade8d627bf3958cfe02~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![](07/juejin-isr.webp)
 
 ### ISR存在缺陷
 
